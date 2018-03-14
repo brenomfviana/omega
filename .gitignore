@@ -1,6 +1,7 @@
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+omega/nbproject/
+omega/build/
+omega/build.xml
+omega/nbbuild/
+omega/dist/
+omega/nbdist/
+omega/.nb-gradle/
