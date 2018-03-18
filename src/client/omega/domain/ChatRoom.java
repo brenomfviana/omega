@@ -1,7 +1,7 @@
 /*
  * GLP-3.0 License.
  */
-package omega.domain;
+package client.omega.domain;
 
 import java.util.List;
 
@@ -15,16 +15,16 @@ public class ChatRoom {
     // Class name
     private String className;
     // Chat room owner
-    private User owner;
+    private Client owner;
     // List of users
-    private List<User> users;
+    private List<Client> users;
 
-    public ChatRoom(String className, User owner) {
+    public ChatRoom(String className, Client owner) {
         this.className = className;
         this.owner = owner;
     }
 
-    public ChatRoom(String className, User owner, List<User> users) {
+    public ChatRoom(String className, Client owner, List<Client> users) {
         this.className = className;
         this.owner = owner;
         this.users = users;
@@ -38,19 +38,19 @@ public class ChatRoom {
         this.className = className;
     }
 
-    public User getOwner() {
+    public Client getOwner() {
         return owner;
     }
 
-    public List<User> getUsers() {
+    public List<Client> getUsers() {
         return users;
     }
 
-    public void addUser(User user) {
-        this.users.add(user);
+    public void addUser(Client client) {
+        this.users.add(client);
     }
 
-    public void removeUser(User user) {
-        this.users.add(user);
+    public void removeUser(Client client) {
+        this.users.add(client);
     }
 }

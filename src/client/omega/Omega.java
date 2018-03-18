@@ -1,9 +1,9 @@
 /*
  * GLP-3.0 License.
  */
-package omega;
+package client.omega;
 
-import omega.services.ChatGUI;
+import client.omega.services.ChatGUI;
 
 /**
  *

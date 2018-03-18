@@ -5,3 +5,5 @@ omega/nbbuild/
 omega/dist/
 omega/nbdist/
 omega/.nb-gradle/
+/OmegaServer/nbproject/private/
+/OmegaClient/nbproject/private/

@@ -1,28 +1,28 @@
 /*
- * GLP-3.0 License.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package omega.domain;
+package client.omega.domain;
 
 /**
  *
- * @author Breno Viana
- * @author Murilo Bento
+ * @author mourilo
  */
-public class User {
-
+public class ClientCredentials {
     // Nickname
     private String nickname;
     // Username
     private String username;
     // Language
     private Language language;
-
-    public User(String nickname, String username, Language language) {
+    
+    public ClientCredentials(String nickname, String username, Language language){
         this.nickname = nickname;
         this.username = username;
         this.language = language;
     }
-
+    
     public String getNickname() {
         return nickname;
     }

@@ -1,7 +1,7 @@
 /*
  * GLP-3.0 License.
  */
-package omega.domain;
+package client.omega.domain;
 
 /**
  *

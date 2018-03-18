@@ -1,7 +1,7 @@
 /*
  * GLP-3.0 License.
  */
-package omegaserver.domain;
+package server.domain;
 
 /**
  *
