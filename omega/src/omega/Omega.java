@@ -3,6 +3,8 @@
  */
 package omega;
 
+import omega.services.ChatGUI;
+
 /**
  *
  * @author Breno Viana
@@ -13,7 +15,8 @@ public class Omega {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String args[]) {
+        ChatGUI cgui = new ChatGUI();
+        cgui.run();
     }
 }
