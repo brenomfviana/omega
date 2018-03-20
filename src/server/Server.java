@@ -19,12 +19,11 @@ import interfaces.ClientInterface;
 public class Server extends UnicastRemoteObject implements ServerInterface{
     
     private ArrayList<ClientInterface> users;
-    private String address;
     
     public Server(String address) throws RemoteException{
         super();
         users = new ArrayList<>();
-        this.address = address;
+        System.setProperty("java.rmi.server.hostname", address);
     }
     
     @Override
@@ -50,7 +49,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface{
         }
     }
     
-    @Override
     public ArrayList<ClientInterface> getConnectedUsers() throws RemoteException {
         return this.users;
     }

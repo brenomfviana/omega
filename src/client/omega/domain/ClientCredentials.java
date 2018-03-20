@@ -5,11 +5,13 @@
  */
 package client.omega.domain;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mourilo
  */
-public class ClientCredentials {
+public class ClientCredentials implements Serializable {
     // Nickname
     private String nickname;
     // Username

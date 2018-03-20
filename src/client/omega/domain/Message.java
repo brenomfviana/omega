@@ -6,12 +6,13 @@
 package client.omega.domain;
 
 import interfaces.ClientInterface;
+import java.io.Serializable;
 
 /**
  *
  * @author mourilo
  */
-public class Message {
+public class Message implements Serializable{
     
     private ClientInterface sender;
     private String content;
