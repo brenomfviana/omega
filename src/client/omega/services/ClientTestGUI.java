@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 public class ClientTestGUI {
     private Client client;
     private ServerInterface server;
-    private TestGUI gui;
     
     public void doConnect(String host, String port){
          try {

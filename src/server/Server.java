@@ -49,6 +49,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface{
         }
     }
     
+    @Override
     public ArrayList<ClientInterface> getConnectedUsers() throws RemoteException {
         return this.users;
     }

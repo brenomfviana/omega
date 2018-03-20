@@ -17,4 +17,5 @@ import java.util.ArrayList;
 public interface ServerInterface extends Remote {
     public boolean login(ClientInterface clientInterface) throws RemoteException;
     public void sendMessageToServer(Message message) throws RemoteException;
+    public ArrayList<ClientInterface> getConnectedUsers() throws RemoteException;
 }
