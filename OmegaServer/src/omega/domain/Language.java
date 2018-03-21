@@ -1,14 +1,16 @@
 /*
  * GLP-3.0 License.
  */
-package server.domain;
+package omega.domain;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Breno Viana
  * @author Murilo Bento
  */
-public enum Language {
+public enum Language implements Serializable {
 
     UNKNOW("", ""),
     DUTCH("nl", "Nederlands"),

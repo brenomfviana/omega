@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client.omega.services;
+package omega.services;
 
-import client.omega.domain.Message;
-import interfaces.GUI;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import omega.domain.Message;
+import omega.contracts.GUI;
 
 /**
  *
  * @author mourilo
  */
-public class TestGUI implements GUI, Serializable{
+public class TestGUI implements GUI, Serializable {
 
     @Override
     public void showMessage(Message message) {
@@ -29,5 +29,5 @@ public class TestGUI implements GUI, Serializable{
     public void showMessage(String message) {
         System.out.println(message);
     }
-    
+
 }

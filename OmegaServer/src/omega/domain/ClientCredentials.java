@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client.omega.domain;
+package omega.domain;
 
 import java.io.Serializable;
 
@@ -12,19 +12,20 @@ import java.io.Serializable;
  * @author mourilo
  */
 public class ClientCredentials implements Serializable {
+
     // Nickname
     private String nickname;
     // Username
     private String username;
     // Language
     private Language language;
-    
-    public ClientCredentials(String nickname, String username, Language language){
+
+    public ClientCredentials(String nickname, String username, Language language) {
         this.nickname = nickname;
         this.username = username;
         this.language = language;
     }
-    
+
     public String getNickname() {
         return nickname;
     }

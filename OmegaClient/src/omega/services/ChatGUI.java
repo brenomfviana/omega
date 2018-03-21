@@ -1,7 +1,7 @@
 /*
  * GLP-3.0 License.
  */
-package client.omega.services;
+package omega.services;
 
 import java.awt.CardLayout;
 import java.util.logging.Level;
@@ -264,7 +264,7 @@ public class ChatGUI extends javax.swing.JFrame {
         jMainPanel.setPreferredSize(new java.awt.Dimension(500, 500));
 
         jLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/omega/assets/omega.png"))); // NOI18N
+        jLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/omegaclient/assets/omega.png"))); // NOI18N
 
         jConfigPanel.setBackground(new java.awt.Color(255, 255, 255));
 

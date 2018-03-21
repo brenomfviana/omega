@@ -1,7 +1,7 @@
 /*
  * GLP-3.0 License.
  */
-package client.omega.domain;
+package omega.domain;
 
 import java.io.Serializable;
 

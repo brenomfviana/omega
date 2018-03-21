@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces;
+package omega.contracts;
 
-import client.omega.domain.Message;
+import omega.domain.Message;
 
 /**
  *
  * @author mourilo
  */
 public interface GUI {
+
     void showMessage(Message message);
+
     void showMessage(String message);
 }

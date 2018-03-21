@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces;
+package omega.contracts;
 
-import client.omega.domain.Message;
+import omega.domain.Message;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -15,7 +15,10 @@ import java.util.ArrayList;
  * @author mourilo
  */
 public interface ServerInterface extends Remote {
+
     public boolean login(ClientInterface clientInterface) throws RemoteException;
+
     public void sendMessageToServer(Message message) throws RemoteException;
+
     public ArrayList<ClientInterface> getConnectedUsers() throws RemoteException;
 }
