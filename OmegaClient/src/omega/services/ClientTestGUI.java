@@ -31,7 +31,7 @@ public class ClientTestGUI {
 
             this.server = (ServerInterface) Naming.lookup("rmi://" + host + ":" + port + "/server");
             
-            this.client = new Client("mourilo", "murilao", Language.BRAZILIAN_PORTUGUESE, new TestGUI());
+            this.client = new Client("mourilo", "murilao", Language.ENGLISH, new TestGUI());
 
             System.out.println("Connected: " + server.login(client));
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
@@ -41,7 +41,7 @@ public class ClientTestGUI {
 
     public void sendText(String text) {
         try {
-            server.sendMessageToServer(new Message(client, text, client.getCredentials().getLanguage()));
+            server.sendMessageToServer(new Message(client, text, Language.BRAZILIAN_PORTUGUESE));
         } catch (RemoteException ex) {
             Logger.getLogger(ClientTestGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
