@@ -20,7 +20,7 @@ import omega.contracts.ServerInterface;
  *
  * @author mourilo
  */
-public class ClientTestGUI {
+public class SecondClientGUI {
 
     private Client client;
     private ServerInterface server;
@@ -31,7 +31,7 @@ public class ClientTestGUI {
 
             this.server = (ServerInterface) Naming.lookup("rmi://" + host + ":" + port + "/server");
             
-            this.client = new Client("mourilo", "murilao", Language.ENGLISH, new TestGUI());
+            this.client = new Client("brenov", "BReno", Language.BRAZILIAN_PORTUGUESE, new TestGUI());
 
             System.out.println("Connected: " + server.login(client));
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
@@ -43,13 +43,14 @@ public class ClientTestGUI {
         try {
             server.sendMessageToServer(new Message(client, text, client.getCredentials().getLanguage()));
         } catch (RemoteException ex) {
-            Logger.getLogger(ClientTestGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SecondClientGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public static void main(String[] args) {
-        ClientTestGUI u = new ClientTestGUI();
+        SecondClientGUI u = new SecondClientGUI();
         u.doConnect("10.7.116.10", "1099");
-        u.sendText("Hello world!");
+        u.sendText("Olá, seu lixo!");
     }
 }
+

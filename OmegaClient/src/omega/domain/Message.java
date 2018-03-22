@@ -24,6 +24,12 @@ public class Message implements Serializable{
         this.language = language;
     }
     
+    public Message(Message message){
+        this.sender = message.sender;
+        this.content = message.content;
+        this.language = message.language;
+    }
+    
     public ClientInterface getSender() {
         return sender;
     }

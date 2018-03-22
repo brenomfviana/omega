@@ -111,10 +111,8 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
 
     private void sendText(String text) {
         try {
-            Message m = new Message(this.client, text, Language.BRAZILIAN_PORTUGUESE);
+            Message m = new Message(this.client, text, client.getCredentials().getLanguage());
             this.server.sendMessageToServer(m);
-            this.client.setLocalMessage(this.client.getCredentials().getUsername()
-                    + m.getContent());
         } catch (RemoteException ex) {
             Logger.getLogger(ClientTestGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -545,7 +543,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         // TODO add your handling code here:
         this.chatCard.show(jBackground, CHAT_SCREEN);
         // Connect
-        doConnect("10.7.124.37", "1099");
+        doConnect("10.7.116.10", "1099");
     }//GEN-LAST:event_jRegisterButtonActionPerformed
 
     private void jUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsernameActionPerformed
