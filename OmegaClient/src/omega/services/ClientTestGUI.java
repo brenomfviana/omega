@@ -49,7 +49,7 @@ public class ClientTestGUI {
 
     public static void main(String[] args) {
         ClientTestGUI u = new ClientTestGUI();
-        u.doConnect("192.168.0.26", "1099");
+        u.doConnect("10.7.124.37", "1099");
         u.sendText("Hello world!");
     }
 }

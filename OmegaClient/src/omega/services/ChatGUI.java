@@ -4,17 +4,26 @@
 package omega.services;
 
 import java.awt.CardLayout;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import omega.contracts.GUI;
+import omega.contracts.ServerInterface;
+import omega.domain.Client;
+import omega.domain.Language;
+import omega.domain.Message;
 
 /**
  *
  * @author Breno Viana
  * @author Murilo Bento
  */
-public class ChatGUI extends javax.swing.JFrame {
+public class ChatGUI extends javax.swing.JFrame implements GUI {
 
     // 
     private final static String MAIN_SCREEN = "MAIN_SCREEN";
@@ -25,6 +34,10 @@ public class ChatGUI extends javax.swing.JFrame {
     // Card layout
     private final CardLayout card;
     private final CardLayout chatCard;
+
+    //
+    private Client client;
+    private ServerInterface server;
 
     /**
      * Creates new form ChatGUI
@@ -41,8 +54,16 @@ public class ChatGUI extends javax.swing.JFrame {
         //
         this.card = new CardLayout();
         this.jConfigPanel.setLayout(card);
-        this.jConfigPanel.add(this.jLoginChatPanel, LOGIN_SCREEN);
+        // this.jConfigPanel.add(this.jLoginChatPanel, LOGIN_SCREEN);
         this.jConfigPanel.add(this.jRegisterPanel, SIGNUP_SCREEN);
+        // Add items
+        for (Language l : Language.values()) {
+            if (l != Language.UNKNOW) {
+                jLanguage.addItem(l.getName());
+            }
+        }
+        //
+        jChat.setContentType("text/html");
     }
 
     public void run() {
@@ -54,8 +75,8 @@ public class ChatGUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException |
-                IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         /* Create and display the form */
@@ -63,7 +84,55 @@ public class ChatGUI extends javax.swing.JFrame {
             new ChatGUI().setVisible(true);
         });
     }
-    
+
+    private void doConnect(String host, String port) {
+        try {
+            System.setProperty("java.rmi.server.hostname", host);
+
+            this.server = (ServerInterface) Naming.lookup("rmi://"
+                    + host + ":" + port + "/server");
+
+            Language sl = Language.UNKNOW;
+            for (Language l : Language.values()) {
+                if (l.getId().equals(this.jLanguage.getSelectedItem())) {
+                    sl = l;
+                    break;
+                }
+            }
+
+            this.client = new Client(this.jUsername.getText(),
+                    this.jUsername.getText(), sl, this);
+
+            System.out.println("Connected: " + server.login(client));
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
+            System.err.println("Client exception: " + e.toString());
+        }
+    }
+
+    private void sendText(String text) {
+        try {
+            Message m = new Message(this.client, text, Language.BRAZILIAN_PORTUGUESE);
+            this.server.sendMessageToServer(m);
+            this.client.setLocalMessage(this.client.getCredentials().getUsername()
+                    + m.getContent());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientTestGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void showMessage(Message message) {
+        System.out.println(message.getContent());
+        this.jChat.setText(this.jChat.getText() + "<html><b>"
+                + message.getContent() + "<br></b></html>");
+    }
+
+    @Override
+    public void showMessage(String message) {
+        this.jChat.setText(this.jChat.getText() + "<html><b>"
+                + message + "<br></b></html>");
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,8 +149,10 @@ public class ChatGUI extends javax.swing.JFrame {
         jPassword = new javax.swing.JPasswordField();
         jPasswordLabelLogin1 = new javax.swing.JLabel();
         jBackButton = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jLanguage = new javax.swing.JComboBox<>();
         jPasswordLabelLogin2 = new javax.swing.JLabel();
+        jNickname = new javax.swing.JTextField();
+        jNicknameLabelLogin = new javax.swing.JLabel();
         jLoginChatPanel = new javax.swing.JPanel();
         jLoginButton = new javax.swing.JButton();
         jCRNameLogin = new javax.swing.JTextField();
@@ -94,11 +165,16 @@ public class ChatGUI extends javax.swing.JFrame {
         jConfigPanel = new javax.swing.JPanel();
         jUserPanel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel3 = new javax.swing.JPanel();
+        jMessageTextField = new javax.swing.JTextField();
+        jSendButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jChat = new javax.swing.JTextPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jLogOff = new javax.swing.JButton();
         jBackground = new javax.swing.JPanel();
 
         jRegisterPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -122,6 +198,7 @@ public class ChatGUI extends javax.swing.JFrame {
 
         jUsernameLabelLogin1.setText("Username:");
 
+        jPassword.setEnabled(false);
         jPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordActionPerformed(evt);
@@ -129,8 +206,9 @@ public class ChatGUI extends javax.swing.JFrame {
         });
 
         jPasswordLabelLogin1.setText("Password:");
+        jPasswordLabelLogin1.setEnabled(false);
 
-        jBackButton.setText("Back");
+        jBackButton.setText("Quit");
         jBackButton.setFocusPainted(false);
         jBackButton.setRequestFocusEnabled(false);
         jBackButton.addActionListener(new java.awt.event.ActionListener() {
@@ -139,35 +217,56 @@ public class ChatGUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLanguage.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Language" }));
 
         jPasswordLabelLogin2.setText("Language:");
+
+        jNickname.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        jNickname.setEnabled(false);
+        jNickname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jNicknameActionPerformed(evt);
+            }
+        });
+
+        jNicknameLabelLogin.setText("Nickname:");
+        jNicknameLabelLogin.setEnabled(false);
 
         javax.swing.GroupLayout jRegisterPanelLayout = new javax.swing.GroupLayout(jRegisterPanel);
         jRegisterPanel.setLayout(jRegisterPanelLayout);
         jRegisterPanelLayout.setHorizontalGroup(
             jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jRegisterPanelLayout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(107, 107, 107)
                 .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jRegisterPanelLayout.createSequentialGroup()
+                    .addComponent(jUsernameLabelLogin1)
+                    .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordLabelLogin2)
-                            .addComponent(jPasswordLabelLogin1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jRegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jUsernameLabelLogin1))
-                .addContainerGap(111, Short.MAX_VALUE))
+                            .addGroup(jRegisterPanelLayout.createSequentialGroup()
+                                .addGap(85, 85, 85)
+                                .addComponent(jNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jNicknameLabelLogin))
+                        .addGroup(jRegisterPanelLayout.createSequentialGroup()
+                            .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPasswordLabelLogin2)
+                                .addComponent(jPasswordLabelLogin1))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jRegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         jRegisterPanelLayout.setVerticalGroup(
             jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jRegisterPanelLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jRegisterPanelLayout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jNicknameLabelLogin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jUsernameLabelLogin1))
@@ -177,13 +276,13 @@ public class ChatGUI extends javax.swing.JFrame {
                     .addComponent(jPasswordLabelLogin1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPasswordLabelLogin2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRegisterButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jBackButton)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
         );
 
         jLoginChatPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -264,7 +363,7 @@ public class ChatGUI extends javax.swing.JFrame {
         jMainPanel.setPreferredSize(new java.awt.Dimension(500, 500));
 
         jLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/omegaclient/assets/omega.png"))); // NOI18N
+        jLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/omega/assets/omega.png"))); // NOI18N
 
         jConfigPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -297,6 +396,43 @@ public class ChatGUI extends javax.swing.JFrame {
         jUserPanel.setBackground(new java.awt.Color(255, 255, 255));
         jUserPanel.setPreferredSize(new java.awt.Dimension(500, 500));
 
+        jMessageTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMessageTextFieldActionPerformed(evt);
+            }
+        });
+
+        jSendButton.setText("Send");
+        jSendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSendButtonActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(jChat);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jMessageTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(jSendButton))
+            .addComponent(jScrollPane3)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jMessageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSendButton)))
+        );
+
+        jTabbedPane1.addTab("Chat", jPanel3);
+
         jScrollPane1.setViewportView(jList1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -314,10 +450,10 @@ public class ChatGUI extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setText("Log Off");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jLogOff.setText("Log Off");
+        jLogOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jLogOffActionPerformed(evt);
             }
         });
 
@@ -327,11 +463,11 @@ public class ChatGUI extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addComponent(jLogOff))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+            .addComponent(jLogOff, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jUserPanelLayout = new javax.swing.GroupLayout(jUserPanel);
@@ -399,12 +535,17 @@ public class ChatGUI extends javax.swing.JFrame {
         this.card.show(jConfigPanel, SIGNUP_SCREEN);
     }//GEN-LAST:event_jSignUpButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogOffActionPerformed
+        // TODO add your handling code here:        // TODO add your handling code here:
+        this.chatCard.show(jBackground, MAIN_SCREEN);
+        this.card.show(jConfigPanel, SIGNUP_SCREEN);
+    }//GEN-LAST:event_jLogOffActionPerformed
 
     private void jRegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegisterButtonActionPerformed
         // TODO add your handling code here:
+        this.chatCard.show(jBackground, CHAT_SCREEN);
+        // Connect
+        doConnect("10.7.124.37", "1099");
     }//GEN-LAST:event_jRegisterButtonActionPerformed
 
     private void jUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsernameActionPerformed
@@ -417,23 +558,43 @@ public class ChatGUI extends javax.swing.JFrame {
 
     private void jBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBackButtonActionPerformed
         // TODO add your handling code here:
-        this.card.show(jConfigPanel, LOGIN_SCREEN);
+        // this.card.show(jConfigPanel, LOGIN_SCREEN);
+        System.exit(0);
     }//GEN-LAST:event_jBackButtonActionPerformed
+
+    private void jNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNicknameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jNicknameActionPerformed
+
+    private void jSendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSendButtonActionPerformed
+        sendText(jMessageTextField.getText());
+        jMessageTextField.setText("");
+    }//GEN-LAST:event_jSendButtonActionPerformed
+
+    private void jMessageTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMessageTextFieldActionPerformed
+        sendText(jMessageTextField.getText());
+        jMessageTextField.setText("");
+    }//GEN-LAST:event_jMessageTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBackButton;
     private javax.swing.JPanel jBackground;
-    private javax.swing.JButton jButton1;
     private javax.swing.JTextField jCRNameLogin;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextPane jChat;
     private javax.swing.JPanel jConfigPanel;
+    private javax.swing.JComboBox<String> jLanguage;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JButton jLogOff;
     private javax.swing.JButton jLoginButton;
     private javax.swing.JPanel jLoginChatPanel;
     private javax.swing.JLabel jLogo;
     private javax.swing.JPanel jMainPanel;
+    private javax.swing.JTextField jMessageTextField;
+    private javax.swing.JTextField jNickname;
+    private javax.swing.JLabel jNicknameLabelLogin;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField jPassword;
     private javax.swing.JPasswordField jPasswordFieldLogin;
     private javax.swing.JLabel jPasswordLabelLogin;
@@ -442,6 +603,8 @@ public class ChatGUI extends javax.swing.JFrame {
     private javax.swing.JButton jRegisterButton;
     private javax.swing.JPanel jRegisterPanel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton jSendButton;
     private javax.swing.JButton jSignUpButton;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel jUserPanel;
@@ -449,4 +612,5 @@ public class ChatGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jUsernameLabelLogin;
     private javax.swing.JLabel jUsernameLabelLogin1;
     // End of variables declaration//GEN-END:variables
+
 }
