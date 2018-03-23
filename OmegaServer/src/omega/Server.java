@@ -46,11 +46,15 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         for (ClientInterface oneUser : users) {
             Message messageToSend = new Message(message);
 
-            if (!message.getLanguage().equals(oneUser.getCredentials().getLanguage())) {
+            if (!message.getLanguage().equals(oneUser.getCredentials()
+                    .getLanguage())) {
                 try {
-                    messageToSend.setContent(googleTranslator.translateMessage(message, oneUser.getCredentials().getLanguage()));
+                    messageToSend.setContent(googleTranslator
+                            .translateMessage(message, oneUser
+                                    .getCredentials().getLanguage()));
                 } catch (IOException ex) {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Server.class.getName())
+                            .log(Level.SEVERE, null, ex);
                 }
             }
 

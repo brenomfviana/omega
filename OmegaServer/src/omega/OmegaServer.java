@@ -24,7 +24,7 @@ public class OmegaServer {
      */
     public static void main(String[] args) {
         try {
-            String address = "10.7.116.10";
+            String address = "192.168.0.26";
             System.setProperty("java.rmi.server.hostname", address);
             ServerInterface server = new Server(address);
 
@@ -34,7 +34,8 @@ public class OmegaServer {
             System.err.println("Server ready");
 
         } catch (RemoteException | MalformedURLException ex) {
-            Logger.getLogger(OmegaServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OmegaServer.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
     }
 
