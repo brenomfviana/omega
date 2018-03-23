@@ -50,7 +50,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jNickname" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jNicknameLabelLogin" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -83,7 +83,6 @@
         <Component class="javax.swing.JButton" name="jRegisterButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Confirm"/>
-            <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="requestFocusEnabled" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -120,7 +119,6 @@
         <Component class="javax.swing.JButton" name="jBackButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Quit"/>
-            <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="requestFocusEnabled" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -394,6 +392,7 @@
                 <Component class="javax.swing.JButton" name="jSendButton">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Send"/>
+                    <Property name="requestFocusEnabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jSendButtonActionPerformed"/>
@@ -407,6 +406,11 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JTextPane" name="jChat">
+                      <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -483,6 +487,7 @@
             <Component class="javax.swing.JButton" name="jLogOff">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log Off"/>
+                <Property name="requestFocusEnabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jLogOffActionPerformed"/>

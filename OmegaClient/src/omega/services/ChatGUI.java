@@ -38,6 +38,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
     //
     private Client client;
     private ServerInterface server;
+    private String conversation;
 
     /**
      * Creates new form ChatGUI
@@ -63,7 +64,9 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
             }
         }
         //
-        jChat.setContentType("text/html");
+        this.jChat.setContentType("text/html");
+        this.setTitle("Omega Chat");
+        this.conversation = "";
     }
 
     public void run() {
@@ -75,8 +78,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         /* Create and display the form */
@@ -94,7 +96,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
 
             Language sl = Language.UNKNOW;
             for (Language l : Language.values()) {
-                if (l.getId().equals(this.jLanguage.getSelectedItem())) {
+                if (l.getName().equals(this.jLanguage.getSelectedItem())) {
                     sl = l;
                     break;
                 }
@@ -111,7 +113,8 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
 
     private void sendText(String text) {
         try {
-            Message m = new Message(this.client, text, client.getCredentials().getLanguage());
+            Message m = new Message(this.client, text,
+                    this.client.getCredentials().getLanguage());
             this.server.sendMessageToServer(m);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientTestGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,9 +123,15 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
 
     @Override
     public void showMessage(Message message) {
-        System.out.println(message.getContent());
-        this.jChat.setText(this.jChat.getText() + "<html><b>"
-                + message.getContent() + "<br></b></html>");
+        try {
+            this.conversation = this.conversation.concat("<b>"
+                    + message.getSender().getCredentials().getUsername() + ":</b> "
+                    + message.getContent() + "<br>");
+            System.out.println(this.conversation);
+            this.jChat.setText("<html>" + this.conversation + "</html>");
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -179,7 +188,6 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         jRegisterPanel.setPreferredSize(new java.awt.Dimension(500, 275));
 
         jRegisterButton.setText("Confirm");
-        jRegisterButton.setFocusPainted(false);
         jRegisterButton.setRequestFocusEnabled(false);
         jRegisterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,7 +215,6 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         jPasswordLabelLogin1.setEnabled(false);
 
         jBackButton.setText("Quit");
-        jBackButton.setFocusPainted(false);
         jBackButton.setRequestFocusEnabled(false);
         jBackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,7 +267,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         jRegisterPanelLayout.setVerticalGroup(
             jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jRegisterPanelLayout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jNicknameLabelLogin))
@@ -401,12 +408,16 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         });
 
         jSendButton.setText("Send");
+        jSendButton.setRequestFocusEnabled(false);
         jSendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSendButtonActionPerformed(evt);
             }
         });
 
+        jChat.setEditable(false);
+        jChat.setFocusable(false);
+        jChat.setRequestFocusEnabled(false);
         jScrollPane3.setViewportView(jChat);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -449,6 +460,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLogOff.setText("Log Off");
+        jLogOff.setRequestFocusEnabled(false);
         jLogOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jLogOffActionPerformed(evt);
@@ -531,19 +543,25 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
     private void jSignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSignUpButtonActionPerformed
         // TODO add your handling code here:
         this.card.show(jConfigPanel, SIGNUP_SCREEN);
+        try {
+            this.setTitle("Omega Chat - " + this.client.getCredentials().getUsername());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jSignUpButtonActionPerformed
 
     private void jLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogOffActionPerformed
         // TODO add your handling code here:        // TODO add your handling code here:
         this.chatCard.show(jBackground, MAIN_SCREEN);
         this.card.show(jConfigPanel, SIGNUP_SCREEN);
+        this.setTitle("Omega Chat");
     }//GEN-LAST:event_jLogOffActionPerformed
 
     private void jRegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegisterButtonActionPerformed
         // TODO add your handling code here:
         this.chatCard.show(jBackground, CHAT_SCREEN);
         // Connect
-        doConnect("10.7.116.10", "1099");
+        doConnect("192.168.0.26", "1099");
     }//GEN-LAST:event_jRegisterButtonActionPerformed
 
     private void jUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsernameActionPerformed

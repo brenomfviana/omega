@@ -49,7 +49,7 @@ public class SecondClientGUI {
 
     public static void main(String[] args) {
         SecondClientGUI u = new SecondClientGUI();
-        u.doConnect("10.7.116.10", "1099");
+        u.doConnect("192.168.0.26", "1099");
         u.sendText("Olá, seu lixo!");
     }
 }
