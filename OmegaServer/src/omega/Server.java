@@ -40,6 +40,11 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         clientInterface.setServer(this);
         return true;
     }
+    
+    @Override
+    public boolean disconnect(ClientInterface clientInterface) throws RemoteException {
+        return users.remove(clientInterface);
+    }
 
     @Override
     public void sendMessageToServer(Message message) throws RemoteException {

@@ -41,7 +41,7 @@ public class SecondClientGUI {
 
     public void sendText(String text) {
         try {
-            server.sendMessageToServer(new Message(client, text, client.getCredentials().getLanguage()));
+            server.sendMessageToServer(new Message(client, text));
         } catch (RemoteException ex) {
             Logger.getLogger(SecondClientGUI.class.getName()).log(Level.SEVERE, null, ex);
         }

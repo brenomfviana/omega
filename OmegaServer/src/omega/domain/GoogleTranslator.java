@@ -43,10 +43,20 @@ public class GoogleTranslator implements Serializable, Translator {
         // Get translated message
         in = new BufferedReader(new InputStreamReader(
                 uc.getInputStream()));
+        
         String m = in.readLine();
+        String fullMessage = "";
+        int index;
+        
         m = m.substring(m.indexOf("\"") + 1);
-        m = m.substring(0, m.indexOf("\""));
-        return m;
+        fullMessage = fullMessage.concat(m.substring(0, m.indexOf("\"")));
+        
+        while((index = m.indexOf("[")) != -1){
+            m = m.substring(index + 2);
+            fullMessage = fullMessage.concat(m.substring(0, m.indexOf("\"")));
+        }
+        
+        return fullMessage;
     }
     
 }

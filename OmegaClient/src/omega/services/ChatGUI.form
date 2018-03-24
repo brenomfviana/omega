@@ -16,31 +16,38 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jUsernameLabelLogin1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="85" pref="85" max="-2" attributes="0"/>
-                                  <Component id="jNickname" min="-2" pref="201" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jNicknameLabelLogin" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="jUsernameLabelLogin1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPasswordLabelLogin2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPasswordLabelLogin1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="85" pref="85" max="-2" attributes="0"/>
+                                      <Component id="jNickname" min="-2" pref="201" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jNicknameLabelLogin" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLanguage" min="-2" pref="201" max="-2" attributes="0"/>
-                                  <Component id="jPassword" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
-                                  <Component id="jUsername" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
-                                  <Component id="jBackButton" alignment="0" min="-2" pref="125" max="-2" attributes="0"/>
-                                  <Component id="jRegisterButton" alignment="0" min="-2" pref="125" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jPasswordLabelLogin2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jPasswordLabelLogin1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLanguage" min="-2" pref="201" max="-2" attributes="0"/>
+                                      <Component id="jPassword" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
+                                      <Component id="jUsername" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
+                                      <Component id="jBackButton" alignment="0" min="-2" pref="125" max="-2" attributes="0"/>
+                                      <Component id="jRegisterButton" alignment="0" min="-2" pref="125" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jServerLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jAddress" min="-2" pref="201" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="107" max="32767" attributes="0"/>
@@ -50,7 +57,12 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="27" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jAddress" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jServerLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jNickname" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jNicknameLabelLogin" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -74,7 +86,7 @@
                   <Component id="jRegisterButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jBackButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -155,6 +167,19 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Nickname:"/>
             <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jAddress">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jAddressActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jServerLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Server Address:"/>
           </Properties>
         </Component>
       </SubComponents>

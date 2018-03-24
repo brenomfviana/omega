@@ -47,6 +47,6 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 
     @Override
     public void sendMessage(String message) throws RemoteException {
-        server.sendMessageToServer(new Message(this, message, this.getCredentials().getLanguage()));
+        server.sendMessageToServer(new Message(this, message));
     }
 }

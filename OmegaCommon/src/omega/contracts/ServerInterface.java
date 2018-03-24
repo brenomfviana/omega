@@ -5,10 +5,10 @@
  */
 package omega.contracts;
 
-import omega.domain.Message;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import omega.domain.Message;
 
 /**
  *
@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public interface ServerInterface extends Remote {
 
     public boolean login(ClientInterface clientInterface) throws RemoteException;
+    
+    public boolean disconnect(ClientInterface clientInterface) throws RemoteException;
 
     public void sendMessageToServer(Message message) throws RemoteException;
 

@@ -5,7 +5,9 @@
  */
 package omega;
 
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -24,7 +26,7 @@ public class OmegaServer {
      */
     public static void main(String[] args) {
         try {
-            String address = "192.168.0.26";
+            String address = (args.length < 1) ? "127.0.0.1" : args[0];
             System.setProperty("java.rmi.server.hostname", address);
             ServerInterface server = new Server(address);
 

@@ -113,8 +113,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
 
     private void sendText(String text) {
         try {
-            Message m = new Message(this.client, text,
-                    this.client.getCredentials().getLanguage());
+            Message m = new Message(this.client, text);
             this.server.sendMessageToServer(m);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientTestGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,6 +159,8 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         jPasswordLabelLogin2 = new javax.swing.JLabel();
         jNickname = new javax.swing.JTextField();
         jNicknameLabelLogin = new javax.swing.JLabel();
+        jAddress = new javax.swing.JTextField();
+        jServerLabel = new javax.swing.JLabel();
         jLoginChatPanel = new javax.swing.JPanel();
         jLoginButton = new javax.swing.JButton();
         jCRNameLogin = new javax.swing.JTextField();
@@ -237,37 +238,55 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         jNicknameLabelLogin.setText("Nickname:");
         jNicknameLabelLogin.setEnabled(false);
 
+        jAddress.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        jAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jAddressActionPerformed(evt);
+            }
+        });
+
+        jServerLabel.setText("Server Address:");
+
         javax.swing.GroupLayout jRegisterPanelLayout = new javax.swing.GroupLayout(jRegisterPanel);
         jRegisterPanel.setLayout(jRegisterPanelLayout);
         jRegisterPanelLayout.setHorizontalGroup(
             jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jRegisterPanelLayout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jUsernameLabelLogin1)
-                    .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(73, 73, 73)
+                .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jUsernameLabelLogin1)
+                        .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jRegisterPanelLayout.createSequentialGroup()
+                                    .addGap(85, 85, 85)
+                                    .addComponent(jNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jNicknameLabelLogin))
                             .addGroup(jRegisterPanelLayout.createSequentialGroup()
-                                .addGap(85, 85, 85)
-                                .addComponent(jNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jNicknameLabelLogin))
-                        .addGroup(jRegisterPanelLayout.createSequentialGroup()
-                            .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jPasswordLabelLogin2)
-                                .addComponent(jPasswordLabelLogin1))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jRegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPasswordLabelLogin2)
+                                    .addComponent(jPasswordLabelLogin1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jRegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jRegisterPanelLayout.createSequentialGroup()
+                        .addComponent(jServerLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(107, Short.MAX_VALUE))
         );
         jRegisterPanelLayout.setVerticalGroup(
             jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jRegisterPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jServerLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jRegisterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jNicknameLabelLogin))
@@ -287,7 +306,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
                 .addComponent(jRegisterButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jBackButton)
-                .addGap(39, 39, 39))
+                .addContainerGap())
         );
 
         jLoginChatPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -551,7 +570,12 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
     }//GEN-LAST:event_jSignUpButtonActionPerformed
 
     private void jLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogOffActionPerformed
-        // TODO add your handling code here:        // TODO add your handling code here:
+        try {
+            this.server.disconnect(client);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         this.chatCard.show(jBackground, MAIN_SCREEN);
         this.card.show(jConfigPanel, SIGNUP_SCREEN);
         this.setTitle("Omega Chat");
@@ -561,7 +585,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         // TODO add your handling code here:
         this.chatCard.show(jBackground, CHAT_SCREEN);
         // Connect
-        doConnect("192.168.0.26", "1099");
+        doConnect(jAddress.getText(), "1099");
     }//GEN-LAST:event_jRegisterButtonActionPerformed
 
     private void jUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsernameActionPerformed
@@ -592,7 +616,12 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         jMessageTextField.setText("");
     }//GEN-LAST:event_jMessageTextFieldActionPerformed
 
+    private void jAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jAddressActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField jAddress;
     private javax.swing.JButton jBackButton;
     private javax.swing.JPanel jBackground;
     private javax.swing.JTextField jCRNameLogin;
@@ -621,6 +650,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton jSendButton;
+    private javax.swing.JLabel jServerLabel;
     private javax.swing.JButton jSignUpButton;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel jUserPanel;

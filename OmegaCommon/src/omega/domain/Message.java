@@ -6,6 +6,7 @@
 package omega.domain;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import omega.contracts.ClientInterface;
 
 /**
@@ -15,13 +16,15 @@ import omega.contracts.ClientInterface;
 public class Message implements Serializable {
 
     private ClientInterface sender;
+    private String originalContent;
     private String content;
     private Language language;
 
-    public Message(ClientInterface sender, String content, Language language) {
+    public Message(ClientInterface sender, String content) throws RemoteException {
         this.sender = sender;
+        this.originalContent = content;
         this.content = content;
-        this.language = language;
+        this.language = sender.getCredentials().getLanguage();
     }
     
     public Message(Message message){
@@ -36,6 +39,14 @@ public class Message implements Serializable {
 
     public void setSender(ClientInterface sender) {
         this.sender = sender;
+    }
+
+    public String getOriginalContent() {
+        return originalContent;
+    }
+
+    public void setOriginalContent(String originalContent) {
+        this.originalContent = originalContent;
     }
 
     public String getContent() {
