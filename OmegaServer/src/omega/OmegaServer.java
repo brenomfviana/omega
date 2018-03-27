@@ -5,15 +5,13 @@
  */
 package omega;
 
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-import java.rmi.Naming;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import omega.contracts.ServerInterface;
+import omega.contracts.DullServer;
 
 /**
  *
@@ -24,18 +22,32 @@ public class OmegaServer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AlreadyBoundException {
         try {
-            String address = (args.length < 1) ? "127.0.0.1" : args[0];
+            /*String address = (args.length < 1) ? "192.168.0.10" : args[0];
             System.setProperty("java.rmi.server.hostname", address);
             ServerInterface server = new Server(address);
 
             LocateRegistry.createRegistry(1099);
             Naming.rebind("rmi://" + address + ":1099/server", server);
 
-            System.err.println("Server ready");
+            System.err.println("Server ready");*/
+            
+            String address = "rmi://192.168.0.10:1099/dull";
 
-        } catch (RemoteException | MalformedURLException ex) {
+            //ServerInterface server = new Server(address);
+            DullServer serv = new DullServerImp();
+
+            System.setProperty("java.rmi.server.hostname", "192.168.0.10");
+
+            // Bind the remote object's stub in the registry
+            Registry registry = LocateRegistry.createRegistry(1099);
+            
+            registry.bind(address, serv);
+            
+            System.err.println("Server ready.");
+
+        } catch (RemoteException ex) {
             Logger.getLogger(OmegaServer.class.getName()).log(Level.SEVERE,
                     null, ex);
         }

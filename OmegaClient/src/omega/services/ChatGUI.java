@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -87,12 +89,18 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         });
     }
 
-    private void doConnect(String host, String port) {
+    private void doConnect(String host, int port) {
         try {
-            System.setProperty("java.rmi.server.hostname", host);
+            //System.setProperty("java.rmi.server.hostname", host);
+            
+            Registry registry = LocateRegistry.getRegistry(host, port);
+            
+            String address = "rmi://" + host + ":" + port + "/server";
 
-            this.server = (ServerInterface) Naming.lookup("rmi://"
-                    + host + ":" + port + "/server");
+            /*this.server = (ServerInterface) Naming.lookup("rmi://"
+                    + host + ":" + port + "/server");*/
+            
+            this.server = (ServerInterface) registry.lookup(address);
 
             Language sl = Language.UNKNOW;
             for (Language l : Language.values()) {
@@ -106,7 +114,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
                     this.jUsername.getText(), sl, this);
 
             System.out.println("Connected: " + server.login(client));
-        } catch (RemoteException | NotBoundException | MalformedURLException e) {
+        } catch (RemoteException | NotBoundException e) {
             System.err.println("Client exception: " + e.toString());
         }
     }
@@ -585,7 +593,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
         // TODO add your handling code here:
         this.chatCard.show(jBackground, CHAT_SCREEN);
         // Connect
-        doConnect(jAddress.getText(), "1099");
+        doConnect(jAddress.getText(), 1099);
     }//GEN-LAST:event_jRegisterButtonActionPerformed
 
     private void jUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsernameActionPerformed
