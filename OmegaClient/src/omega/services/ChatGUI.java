@@ -91,14 +91,9 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
 
     private void doConnect(String host, int port) {
         try {
-            //System.setProperty("java.rmi.server.hostname", host);
-            
             Registry registry = LocateRegistry.getRegistry(host, port);
             
             String address = "rmi://" + host + ":" + port + "/server";
-
-            /*this.server = (ServerInterface) Naming.lookup("rmi://"
-                    + host + ":" + port + "/server");*/
             
             this.server = (ServerInterface) registry.lookup(address);
 
@@ -124,7 +119,7 @@ public class ChatGUI extends javax.swing.JFrame implements GUI {
             Message m = new Message(this.client, text);
             this.server.sendMessageToServer(m);
         } catch (RemoteException ex) {
-            Logger.getLogger(ClientTestGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
